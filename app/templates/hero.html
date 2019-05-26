@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}干员一览{% endblock %}
+
+{% block content %}
+
+<div class = 'container'>
+
+	<div class= 'jumbotron'>
+		<h2>干员一览</h2>
+	</div>
+</div>
+
+{{ wtf.quick_form(form) }}
+{#{% if dates %}#}
+{#	<div class='table-responsive'>#}
+{#		<table class='table table-striped'>#}
+{#			<thead><tr><th>日期</th><th>金额</th></tr></thead>#}
+{#			<tbody>#}
+{#				{% for date in dates%}#}
+{#				<tr><td>{{date}}</td><td>{{ revenue[date] }}</td></tr>#}
+{#				{% endfor %}#}
+{#				<tr><td>总和</td><td>{{ revenue.values()|sum() }}</td></tr>#}
+{#			</tbody>#}
+{#		</table>#}
+{#	</div>#}
+{#{% endif %}#}
+
+
+{% endblock %}

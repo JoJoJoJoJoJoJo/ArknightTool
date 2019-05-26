@@ -9,7 +9,8 @@ class Career(db.Model):
     name = db.Column(db.String(64))
 
     def __repr__(self):
-        return u'career(%s): %s' %(self.id, self.name)
+        return u'career(%s): %s' % (self.id, self.name)
+
 
 class Tag(db.Model):
     __tablename__ = 'tag'
@@ -18,13 +19,13 @@ class Tag(db.Model):
     name = db.Column(db.String(64))
 
     def __repr__(self):
-        return u'tag(%s): %s' %(self.id, self.name)
+        return u'tag(%s): %s' % (self.id, self.name)
 
-class HeroTagRel(db.Model):
-    __tablename__ = 'hero_tag_rel'
-
-    hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+HeroTagRel = db.Table(
+    'hero_tag_rel',
+    db.Column('hero_id', db.Integer, db.ForeignKey('hero.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
+)
 
 
 class Hero(db.Model):
@@ -35,12 +36,12 @@ class Hero(db.Model):
     star = db.Column(db.Integer)
     sex = db.Column(db.String(32))
     tags = db.relationship(
-        'Tags',
-        foreign_keys=[HeroTagRel.hero_id],
+        'Tag',
+        secondary=HeroTagRel,
         backref=db.backref('hero', lazy='joined'),
         lazy='dynamic',
-        cascade='all,delete-orphan',
+        cascade='all',
     )
 
     def __repr__(self):
-        return u'hero(%s): %s' %(self.id, self.name)
+        return u'hero(%s): %s' % (self.id, self.name)

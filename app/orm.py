@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import psycopg2
 
+
 class Orm(object):
 
     def __init__(self):
@@ -20,8 +21,8 @@ class Orm(object):
         res = None
         try:
             res = self.cr.execute(sql)
-        except BaseException, e:
-            print e
+        except BaseException as e:
+            print(e)
         return res
 
 
@@ -29,8 +30,9 @@ class Field(object):
     def __init__(self, name, **kwargs):
         self.name = name
 
+
 class MetaModel(type):
-    def __new__(cls, name, bases, attrs, **kwargs):
+    def __new__(cls, name, bases, attrs):
         if not hasattr(cls, 'tables'):
             cls.tables = []
         if not hasattr(cls, 'fields'):
@@ -40,7 +42,8 @@ class MetaModel(type):
         for k, v in attrs.items():
             if isinstance(k, Field):
                 cls.fields[k] = v
-        return type.__new__(cls, name, bases, attrs, **kwargs)
+        return type.__new__(cls, name, bases, attrs)
+
 
 class Model(dict):
     __metaclass__ = MetaModel

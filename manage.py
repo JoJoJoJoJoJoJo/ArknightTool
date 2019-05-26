@@ -8,6 +8,7 @@ from app import create_app
 app = create_app()
 manager = Manager(app)
 
+
 def make_shell_context():
     return {
         'app': app,
@@ -16,6 +17,7 @@ def make_shell_context():
         'Career': Career,
         'Tag': Tag,
     }
+
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
 
