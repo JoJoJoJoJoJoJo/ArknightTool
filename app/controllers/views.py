@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, redirect
+from flask import render_template, redirect, request, url_for
 from . import main
 from . forms import *
 
@@ -9,18 +9,63 @@ def index():
     return 'Hello World'
 
 
-@main.route('/heros', methods=['POST', 'GET'])
+@main.route('/heros')
 def heros():
-    heroForm = HeroForm()
-    if heroForm.validate_on_submit():
-        name = heroForm.name.data
-        star = heroForm.star.data
-        sex = heroForm.sex.data
-        tags = heroForm.tags.data
-        hero = Hero(name=name, star=star, sex=sex)
-        hero.tags.extend(tags)
+    page = request.args.get('page', 1, type=int)
+    pagination = Hero.query.paginate(page, per_page=20, error_out=False).items
+    return render_template('heros.html', pagination=pagination)
+
+
+@main.route('/hero/<id>')
+def hero(id):
+    hero = Hero.query.filter_by(id=id).first()
+    tags = ' '.join(tag.name for tag in hero.tags.all())
+    return render_template('hero.html', hero=hero, tags=tags)
+
+
+@main.route('/create', methods=['POST', 'GET'])
+def create():
+    form = HeroForm()
+    if form.validate_on_submit():
+        hero = Hero(
+            name=form.name.data,
+            star=form.star.data,
+            sex=form.sex.data,
+            position=form.position.data,
+            career_id=form.career.data,
+            is_public=form.is_public.data,
+            experience=form.experience.data,
+            tags=form.tags.data,
+        )
         db.session.add(hero)
         db.session.commit()
-        return redirect('/')
-    return render_template('hero.html', form=heroForm)
+        return redirect(url_for('.hero', id=hero.id))
+    return render_template('edit_hero.html', form=form, hero=None)
 
+
+@main.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    form = HeroForm()
+    hero = Hero.query.filter_by(id=id).first()
+    if form.validate_on_submit():
+        hero.name = form.name.data
+        hero.star = form.star.data
+        hero.sex = form.sex.data
+        hero.position = form.position.data
+        hero.is_public = form.is_public.data
+        hero.experience = form.experience.data
+        hero.career_id = form.career.data
+        hero.tags = form.tags.data
+        db.session.add(hero)
+        db.session.commit()
+        return redirect(url_for('.hero', id=id))
+    form.name.data = hero.name
+    form.star.data = hero.star
+    form.sex.data = hero.sex
+    # FIXME: career id and tag id not right
+    form.career = hero.career_id
+    form.position.data = hero.position
+    form.is_public.data = hero.is_public
+    form.experience.data = hero.experience
+    form.tags.data = hero.tags
+    return render_template('edit_hero.html', form=form, hero=hero)

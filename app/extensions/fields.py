@@ -7,6 +7,7 @@ class Many2manyField(Field):
 
     def __init__(self, label, model, validators=None, **kwargs):
         self.model = model
+        # fixme
         self.available_records = self.model.query.all()
         super(Many2manyField, self).__init__(label=label, validators=validators, **kwargs)
 

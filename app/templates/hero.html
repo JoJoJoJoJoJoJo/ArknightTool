@@ -1,31 +1,32 @@
 {% extends 'base.html' %}
-{% import 'bootstrap/wtf.html' as wtf %}
-
-{% block title %}干员一览{% endblock %}
-
-{% block content %}
-
-<div class = 'container'>
-
-	<div class= 'jumbotron'>
-		<h2>干员一览</h2>
-	</div>
+{% block title %} 干员：{{ hero.name }} {% endblock %}
+{% block page_content %}
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+            <td>干员名称：</td><td>{{ hero.name }}</td>
+        </tr>
+        <tr>
+            <td>星级</td><td>{{ hero.star }}</td>
+        </tr>
+        <tr>
+            <td>职业</td><td>{{ hero.career_id }}</td>
+        </tr>
+        <tr>
+            <td>性别</td><td>{{ hero.sex }}</td>
+        </tr>
+        <tr>
+            <td>位置</td><td>{{ hero.position }}</td>
+        </tr>
+        <tr>
+            <td>公开招募限定？</td><td>{{ hero.is_public }}</td>
+        </tr>
+        <tr>
+            <td>Tag</td><td>{{ tags }}</td>
+        </tr>
+        <tr>
+            <td>资历</td><td>{{ hero.experience }}</td>
+        </tr>
+    </table>
 </div>
-
-{{ wtf.quick_form(form) }}
-{#{% if dates %}#}
-{#	<div class='table-responsive'>#}
-{#		<table class='table table-striped'>#}
-{#			<thead><tr><th>日期</th><th>金额</th></tr></thead>#}
-{#			<tbody>#}
-{#				{% for date in dates%}#}
-{#				<tr><td>{{date}}</td><td>{{ revenue[date] }}</td></tr>#}
-{#				{% endfor %}#}
-{#				<tr><td>总和</td><td>{{ revenue.values()|sum() }}</td></tr>#}
-{#			</tbody>#}
-{#		</table>#}
-{#	</div>#}
-{#{% endif %}#}
-
-
 {% endblock %}

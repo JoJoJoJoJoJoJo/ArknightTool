@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macro %}
+
+{% block title %}干员一览{% endblock %}
+
+{% block page_content %}
+
+<div class = 'container'>
+
+	<div class= 'jumbotron'>
+		<h2>干员一览</h2>
+	</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead><tr><th>id</th><th>干员名称</th><th>星级</th><th>职业</th><th>性别</th><th>位置</th></tr></thead>
+        <tbody>
+            {% for hero in pagination %}
+            <tr>
+                <td>{{ hero.id }}</td>
+                <td>{{ hero.name }}</td>
+                <td>{{ hero.star }}</td>
+                <td>{{ hero.career_id.name }}</td>
+                <td>{{ hero.sex }}</td>
+                <td>{{ hero.position }}</td>
+                <td><a href="{{ url_for('main.edit', id=hero.id) }}">编辑</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+{% endblock %}
