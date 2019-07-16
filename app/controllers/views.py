@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, current_app
 from . import main
 from . forms import *
+from .fetch_data import FetchHero
 
 
 @main.route('/')
@@ -12,9 +13,10 @@ def index():
 @main.route('/heros')
 def heros():
     page = request.args.get('page', 1, type=int)
-    pagination = Hero.query.paginate(page, per_page=20, error_out=False).items
-    careers = {hero.name: Career.browse(hero.career_id).name for hero in pagination}
-    return render_template('heros.html', pagination=pagination, careers=careers)
+    pagination = Hero.query.paginate(page, per_page=20, error_out=False)
+    heros = pagination.items
+    careers = {hero.name: Career.browse(hero.career_id).name for hero in heros}
+    return render_template('heros.html', pagination=pagination, careers=careers, heros=heros)
 
 
 @main.route('/hero/<id>')
@@ -72,10 +74,16 @@ def edit(id):
     form.name.data = hero.name
     form.star.data = hero.star
     form.sex.data = hero.sex
-    # FIXME: career id and tag id not right
     form.career.data = hero.career_id
     form.position.data = hero.position
     form.is_public.data = hero.is_public
     form.experience.data = hero.experience
     form.tags.data = hero.tags.all()
     return render_template('edit_hero.html', form=form, hero=hero)
+
+
+@main.route('/fetch')
+def fetch():
+    fetch_tool = FetchHero(current_app.config['FETCH_URL'])
+    fetch_tool.fetch_url()
+    return redirect(url_for('.heros'))

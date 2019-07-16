@@ -10,3 +10,4 @@ class Config:
         'DATABASE_URL') or 'sqlite:///' + os.path.join(base_dir, 'data.sqlite')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    FETCH_URL = 'http://wiki.joyme.com/arknights/干员数据表'

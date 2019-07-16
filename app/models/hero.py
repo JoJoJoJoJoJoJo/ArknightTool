@@ -14,7 +14,7 @@ class Career(db.Model, ModelMixin):
 
     @staticmethod
     def insert_careers():
-        careers = ['狙击干员', '术士干员', '先锋干员', '近卫干员', '重装干员', '医疗干员', '辅助干员', '特种干员']
+        careers = ['狙击干员', '术师干员', '先锋干员', '近卫干员', '重装干员', '医疗干员', '辅助干员', '特种干员']
         for name in careers:
             career = Career(name=name)
             db.session.add(career)

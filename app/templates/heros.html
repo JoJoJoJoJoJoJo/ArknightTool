@@ -14,7 +14,7 @@
     <table class="table table-striped">
         <thead><tr><th>id</th><th>干员名称</th><th>星级</th><th>职业</th><th>性别</th><th>位置</th></tr></thead>
         <tbody>
-            {% for hero in pagination %}
+            {% for hero in heros %}
             <tr>
                 <td>{{ hero.id }}</td>
                 <td><a href="{{ url_for('main.hero', id=hero.id) }}"> {{ hero.name }} </a></td>
@@ -28,6 +28,11 @@
         </tbody>
     </table>
 </div>
-
 </div>
+
+{% if pagination %}
+<div class = 'pagination'>
+	{{ macro.pagination_widget(pagination,'.heros') }}
+</div>
+{% endif %}
 {% endblock %}
