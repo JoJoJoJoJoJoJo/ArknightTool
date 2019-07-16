@@ -4,28 +4,28 @@
 <div class="container">
     <table class="table table-striped">
         <tr>
-            <td>干员名称：</td><td>{{ hero.name }}</td>
+            <td>干员名称：</td><td>{{ hero['name'] }}</td>
         </tr>
         <tr>
-            <td>星级</td><td>{{ hero.star }}</td>
+            <td>星级</td><td>{{ hero['star'] }}</td>
         </tr>
         <tr>
-            <td>职业</td><td>{{ hero.career_id }}</td>
+            <td>职业</td><td>{{ hero['career'] }}</td>
         </tr>
         <tr>
-            <td>性别</td><td>{{ hero.sex }}</td>
+            <td>性别</td><td>{{ hero['sex'] }}</td>
         </tr>
         <tr>
-            <td>位置</td><td>{{ hero.position }}</td>
+            <td>位置</td><td>{{ hero['position'] }}</td>
         </tr>
         <tr>
-            <td>公开招募限定？</td><td>{{ hero.is_public }}</td>
+            <td>公开招募限定？</td><td><input type="checkbox" disabled {% if hero['is_public'] %} checked {% endif %}></td>
         </tr>
         <tr>
             <td>Tag</td><td>{{ tags }}</td>
         </tr>
         <tr>
-            <td>资历</td><td>{{ hero.experience }}</td>
+            <td>资历</td><td>{{ hero['experience'] }}</td>
         </tr>
     </table>
 </div>

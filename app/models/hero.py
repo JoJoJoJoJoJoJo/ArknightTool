@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from .. import db
+from .mixin import ModelMixin
 
 
-class Career(db.Model):
+class Career(db.Model, ModelMixin):
     __tablename__ = 'career'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -20,7 +21,7 @@ class Career(db.Model):
         db.session.commit()
 
 
-class Tag(db.Model):
+class Tag(db.Model, ModelMixin):
     __tablename__ = 'tag'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -48,7 +49,7 @@ HeroTagRel = db.Table(
 )
 
 
-class Hero(db.Model):
+class Hero(db.Model, ModelMixin):
     __tablename__ = 'hero'
 
     id = db.Column(db.Integer, primary_key=True)

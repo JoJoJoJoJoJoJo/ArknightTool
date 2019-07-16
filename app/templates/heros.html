@@ -17,9 +17,9 @@
             {% for hero in pagination %}
             <tr>
                 <td>{{ hero.id }}</td>
-                <td>{{ hero.name }}</td>
+                <td><a href="{{ url_for('main.hero', id=hero.id) }}"> {{ hero.name }} </a></td>
                 <td>{{ hero.star }}</td>
-                <td>{{ hero.career_id.name }}</td>
+                <td>{{ careers[hero.name] }}</td>
                 <td>{{ hero.sex }}</td>
                 <td>{{ hero.position }}</td>
                 <td><a href="{{ url_for('main.edit', id=hero.id) }}">编辑</a></td>

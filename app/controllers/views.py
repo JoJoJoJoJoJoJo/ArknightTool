@@ -13,14 +13,24 @@ def index():
 def heros():
     page = request.args.get('page', 1, type=int)
     pagination = Hero.query.paginate(page, per_page=20, error_out=False).items
-    return render_template('heros.html', pagination=pagination)
+    careers = {hero.name: Career.browse(hero.career_id).name for hero in pagination}
+    return render_template('heros.html', pagination=pagination, careers=careers)
 
 
 @main.route('/hero/<id>')
 def hero(id):
     hero = Hero.query.filter_by(id=id).first()
     tags = ' '.join(tag.name for tag in hero.tags.all())
-    return render_template('hero.html', hero=hero, tags=tags)
+    info = {
+        'name': hero.name,
+        'star': hero.star,
+        'career': Career.browse(hero.career_id).name,
+        'sex': hero.sex,
+        'position': hero.position,
+        'is_public': hero.is_public,
+        'experience': hero.experience or '无',
+    }
+    return render_template('hero.html', hero=info, tags=tags)
 
 
 @main.route('/create', methods=['POST', 'GET'])
@@ -63,9 +73,9 @@ def edit(id):
     form.star.data = hero.star
     form.sex.data = hero.sex
     # FIXME: career id and tag id not right
-    form.career = hero.career_id
+    form.career.data = hero.career_id
     form.position.data = hero.position
     form.is_public.data = hero.is_public
     form.experience.data = hero.experience
-    form.tags.data = hero.tags
+    form.tags.data = hero.tags.all()
     return render_template('edit_hero.html', form=form, hero=hero)

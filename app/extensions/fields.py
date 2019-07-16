@@ -13,7 +13,7 @@ class Many2manyField(Field):
 
     def iter_choices(self):
         for record in self.available_records:
-            selected = self.data is not None and record.name in self.data
+            selected = self.data is not None and record in self.data
             yield (record, record.name, selected)
 
     def _value(self):
