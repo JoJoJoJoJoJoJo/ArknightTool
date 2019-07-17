@@ -28,8 +28,8 @@
                         <li><a href="{{ url_for('main.create') }}">添加干员</a></li>
                         <li><a href="{{ url_for('main.fetch') }}">同步干员</a></li>
                         <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">Nav header</li>
-                        <li><a href="#">Seperated link</a></li>
+                        <li class="dropdown-header">其他</li>
+                        <li><a href="{{ url_for('main.query') }}">公招查询</a></li>
                         <li><a href="#">One more link</a></li>
                     </ul>
                 </li>
@@ -54,7 +54,7 @@
 
 {{  super() }}
 <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-
+<script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
 {% endblock %}
 
 {% block scripts %}

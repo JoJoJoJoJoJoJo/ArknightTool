@@ -87,3 +87,10 @@ def fetch():
     fetch_tool = FetchHero(current_app.config['FETCH_URL'])
     fetch_tool.fetch_url()
     return redirect(url_for('.heros'))
+
+
+@main.route('/query', methods=['GET', 'POST'])
+def query():
+    careers = Career.query.all()
+    tags = Tag.query.all()
+    return render_template('query.html', careers=careers, tags=tags)

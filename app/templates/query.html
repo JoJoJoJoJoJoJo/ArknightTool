@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}公招查询{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>公开招募查询</h2>
+    </div>
+    <div class="table-reponsive">
+        <table class="table table-striped table-bordered" border="1">
+            <thead>
+                <tr><td colspan="2"><span class="btn btn-default btn-clear">清除选择</span> </td></tr>
+            </thead>
+            <tbody>
+                <tr id="star"><td><center>星级</center></td><td>
+                    <span class="btn btn-default">1</span>
+                    <span class="btn btn-default">2</span>
+                    <span class="btn btn-default">3</span>
+                    <span class="btn btn-default">4</span>
+                    <span class="btn btn-default">5</span>
+                    <span class="btn btn-default">6</span>
+                </td></tr>
+                <tr id="career"><td><center>职业</center></td><td>
+                    {% for career in careers %}
+                    <span class="btn btn-default">{{ career.name }}</span>
+                    {% endfor %}
+                </td></tr>
+                <tr id="sex"><td><center>性别</center></td><td>
+                    <span class="btn btn-default">男</span>
+                    <span class="btn btn-default">女</span>
+                </td></tr>
+                <tr id="position"><td><center>位置</center></td><td>
+                    <span class="btn btn-default">近战位</span>
+                    <span class="btn btn-default">远程位</span>
+                </td></tr>
+                <tr id="tag"><td><center>标签</center></td><td>
+                    {% for tag in tags %}
+                    <span class="btn btn-default">{{ tag.name }}</span>
+                    {% endfor %}
+                </td></tr>
+                <tr id="experience"><td>干员资历</td><td>
+                    <span class="btn btn-default">新手</span>
+                    <span class="btn btn-default">资深干员</span>
+                    <span class="btn btn-default">高级资深干员</span>
+                </td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<script src="static/js/query.js"></script>
+{% endblock %}
