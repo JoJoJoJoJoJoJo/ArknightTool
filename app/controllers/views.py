@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import json
 from flask import render_template, redirect, request, url_for, current_app
+from itertools import combinations, groupby
 from . import main
 from . forms import *
 from .fetch_data import FetchHero
@@ -89,8 +91,37 @@ def fetch():
     return redirect(url_for('.heros'))
 
 
-@main.route('/query', methods=['GET', 'POST'])
+@main.route('/query')
 def query():
     careers = Career.query.all()
     tags = Tag.query.all()
-    return render_template('query.html', careers=careers, tags=tags)
+    heros = Hero.query.filter_by(is_public=True).order_by(Hero.star.desc()).all()
+    return render_template('query.html', careers=careers, tags=tags, heros= heros)
+
+
+@main.route('/query-data', methods=['POST'])
+def query_data():
+    data = json.loads(request.get_data())
+    # {'a': ['a1', 'a2'], 'b': ['b1', 'b2']} --> {'a1': 'a', 'a2': 'a', 'b1': 'b', 'b2': 'b'}
+    _field_mapping = {i: k for k, v in data.items() for i in v}
+    _all_combinations = sum([list(combinations(_field_mapping.keys(), i + 1)) for i in range(len(_field_mapping.keys()))], [])
+    _all_combinations = list(filter(lambda co: len(co) <= 3, _all_combinations))
+    res = []
+    for combine in _all_combinations:
+        clause = {k: list(v) for k, v in groupby(combine, key=lambda c: _field_mapping[c])}
+        if any(len(group) > 1 for key, group in clause.items() if key != 'tags'):
+            continue
+        query = Hero.query
+        for key, group in clause.items():
+            if key == 'career_id':
+                query = query.filter_by(**{key: Career.name_get(group[0]).id})
+            elif key == 'tags':
+                for tag in group:
+                    query = query.intersect(Hero.query.join(Hero.tags).filter(Tag.name==tag))
+            else:
+                query = query.filter_by(**{key: group[0]})
+        heros = query.order_by(Hero.star.desc()).all()
+        if heros:
+            res.append({'combine': combine, 'hero_ids': [hero.id for hero in heros], 'stars': [hero.star for hero in heros]})
+            res.sort(key=lambda d: min(d['stars']) > 3, reverse=True)
+    return json.dumps(res)

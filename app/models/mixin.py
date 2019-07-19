@@ -1,3 +1,4 @@
+from .. import db
 
 
 class ModelMixin:
@@ -21,3 +22,8 @@ class ModelMixin:
         if not hasattr(cls, 'query'):
             raise NotImplementedError('Mixin not implemented in a model')
         return cls.query.filter_by(name=name).first()
+
+    def __lt__(self, other):
+        if not isinstance(other, db.Model):
+            raise TypeError('Cannot compare the provided data type')
+        return self.id < other.id

@@ -14,22 +14,22 @@
                 <tr><td colspan="2"><span class="btn btn-default btn-clear">清除选择</span> </td></tr>
             </thead>
             <tbody>
-                <tr id="star"><td><center>星级</center></td><td>
-                    <span class="btn btn-default">1</span>
-                    <span class="btn btn-default">2</span>
-                    <span class="btn btn-default">3</span>
-                    <span class="btn btn-default">4</span>
-                    <span class="btn btn-default">5</span>
-                    <span class="btn btn-default">6</span>
-                </td></tr>
+<!--                <tr id="star"><td><center>星级</center></td><td>-->
+<!--                    <span class="btn btn-default">1</span>-->
+<!--                    <span class="btn btn-default">2</span>-->
+<!--                    <span class="btn btn-default">3</span>-->
+<!--                    <span class="btn btn-default">4</span>-->
+<!--                    <span class="btn btn-default">5</span>-->
+<!--                    <span class="btn btn-default">6</span>-->
+<!--                </td></tr>-->
                 <tr id="career"><td><center>职业</center></td><td>
                     {% for career in careers %}
                     <span class="btn btn-default">{{ career.name }}</span>
                     {% endfor %}
                 </td></tr>
                 <tr id="sex"><td><center>性别</center></td><td>
-                    <span class="btn btn-default">男</span>
-                    <span class="btn btn-default">女</span>
+                    <span class="btn btn-default">男性干员</span>
+                    <span class="btn btn-default">女性干员</span>
                 </td></tr>
                 <tr id="position"><td><center>位置</center></td><td>
                     <span class="btn btn-default">近战位</span>
@@ -47,7 +47,19 @@
                 </td></tr>
             </tbody>
         </table>
+        <table class="table">
+            <tr><td>所有可能的干员</td></tr>
+            <tr><td>
+                {% for hero in heros %}
+                <span id="hero{{ hero.id }}"><a href="{{ url_for('main.hero', id=hero.id) }}">{{ hero.name + '(' + hero.star|string + ')' }}</a></span>
+                {% endfor %}
+            </td></tr>
+        </table>
+        <table class="table hidden" id="result">
+            <th><tr><td>标签</td><td>结果</td></tr></th>
+        </table>
     </div>
+
 </div>
 
 {% endblock %}
