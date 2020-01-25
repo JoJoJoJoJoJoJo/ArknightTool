@@ -120,7 +120,7 @@ def query_data():
                     query = query.intersect(Hero.query.join(Hero.tags).filter(Tag.name==tag))
             else:
                 query = query.filter_by(**{key: group[0]})
-        heros = query.order_by(Hero.star.desc()).all()
+        heros = query.filter_by(is_public=True).order_by(Hero.star.desc()).all()
         if heros:
             res.append({'combine': combine, 'hero_ids': [hero.id for hero in heros], 'stars': [hero.star for hero in heros]})
             res.sort(key=lambda d: min(d['stars']) > 3, reverse=True)

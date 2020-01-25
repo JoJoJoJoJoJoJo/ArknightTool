@@ -50,11 +50,20 @@ $(function() {
                 if (!response) {
                     return;
                 }
-                $('span a').hide();
+                $("span[id^='hero']").hide();
                 $('#result').removeClass('hidden');
-//                for (let dict of response) {
-//
-//                }
+                $('#result').empty()
+                $('#result').append('<tr><td>标签</td><td>结果</td></tr>')
+                for (let dict of response) {
+                    let td1 = dict['combine'].join(',');
+                    let td2 = '';
+                    for (let hero_id of dict['hero_ids']) {
+                        let span = $('#hero' + hero_id);
+                        span.show()
+                        td2 += span.html()
+                    }
+                $('#result').append('<tr><td>' + td1 + '</td><td>' + td2 + '</td></tr>')
+                }
             }
         })
     });
